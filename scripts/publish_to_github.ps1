@@ -17,6 +17,7 @@ $allowedFiles = @(
     'docs/SETUP_GUIDE.md', 'docs/VERIFICATION_POLICY.md',
     'docs/PUBLICATION_VERIFICATION_v0.1.1.md',
     'docs/PUBLICATION_RETRY_2026-10-20.md', 'docs/HARDENING_v0.1.2.md',
+    'docs/AUTOCAD_IMPORT_FIX_v0.1.3.md',
     'scripts/build_release_zip.py', 'scripts/install_codex_skills.ps1',
     'scripts/publish_to_github.ps1', 'scripts/triple_verify.py', 'scripts/stage_toolkit_source.ps1',
     'tests/test_toolchain.py', 'tests/test_hardening.py',
