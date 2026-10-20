@@ -3,12 +3,12 @@
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param(
     [string]$Remote = 'https://github.com/Craftageddon/Toolkit.git',
-    [string]$Branch = 'setup/craftageddon-ai-toolchain-v0.1.1'
+    [string]$Branch = 'setup/toolchain-hardening-v0.1.2'
 )
 $ErrorActionPreference = 'Stop'
 $sourceRoot = (Resolve-Path -LiteralPath (Split-Path -Parent $PSScriptRoot)).Path
 $allowedFiles = @(
-    '.gitignore', 'AGENTS.md', 'CHANGELOG.md', 'README.md', 'SECURITY.md',
+    '.gitattributes', '.gitignore', 'AGENTS.md', 'CHANGELOG.md', 'README.md', 'SECURITY.md', 'SHA256SUMS.txt',
     '.github/workflows/toolkit-ci.yml',
     'autocad/generate_lisp.py',
     'autocad/examples/simple_pattern.json', 'autocad/examples/simple_pattern_preview.lsp',
@@ -16,9 +16,10 @@ $allowedFiles = @(
     'docs/GITHUB_DEPLOYMENT.md', 'docs/OFFLINE_QA_SCOPE.md', 'docs/PHASE_STATUS.md',
     'docs/SETUP_GUIDE.md', 'docs/VERIFICATION_POLICY.md',
     'docs/PUBLICATION_VERIFICATION_v0.1.1.md',
+    'docs/PUBLICATION_RETRY_2026-10-20.md', 'docs/HARDENING_v0.1.2.md',
     'scripts/build_release_zip.py', 'scripts/install_codex_skills.ps1',
-    'scripts/publish_to_github.ps1', 'scripts/triple_verify.py',
-    'tests/test_toolchain.py',
+    'scripts/publish_to_github.ps1', 'scripts/triple_verify.py', 'scripts/stage_toolkit_source.ps1',
+    'tests/test_toolchain.py', 'tests/test_hardening.py',
     'templates/Project_Template/README.md', 'templates/Project_Template/REQUIREMENTS.md',
     'templates/Project_Template/CHANGELOG.md',
     'skills/craftageddon-cad-forge/SKILL.md',
@@ -31,7 +32,7 @@ $allowedFiles = @(
 if ($Remote -ne 'https://github.com/Craftageddon/Toolkit.git') {
     throw 'Remote must be the approved Craftageddon/Toolkit HTTPS URL.'
 }
-if ($Branch -ne 'setup/craftageddon-ai-toolchain-v0.1.1') {
+if ($Branch -ne 'setup/toolchain-hardening-v0.1.2') {
     throw 'Branch must be the approved review branch.'
 }
 foreach ($rel in $allowedFiles) {
@@ -60,14 +61,8 @@ try {
     if ($LASTEXITCODE -ne 0 -or $origin -ne $Remote) { throw 'Refusing to publish to unexpected remote' }
     & git switch -c "$Branch"
     if ($LASTEXITCODE -ne 0) { throw 'Unable to create review branch; it may already exist.' }
-    foreach ($rel in $allowedFiles) {
-        $local = Join-Path $sourceRoot ($rel.Replace('/', [IO.Path]::DirectorySeparatorChar))
-        $target = Join-Path $workDir ($rel.Replace('/', [IO.Path]::DirectorySeparatorChar))
-        $parent = Split-Path -Parent $target
-        if (-not (Test-Path -LiteralPath $parent)) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
-        Copy-Item -LiteralPath $local -Destination $target -Force -ErrorAction Stop
-    }
-    & git add --all
+    & (Join-Path $sourceRoot 'scripts/stage_toolkit_source.ps1') -SourceRoot $sourceRoot -DestinationRoot $workDir -Paths $allowedFiles
+    & git add -- $allowedFiles
     if ($LASTEXITCODE -ne 0) { throw 'Unable to stage source files.' }
     & git diff --cached --check
     if ($LASTEXITCODE -ne 0) { throw 'Whitespace or patch validation failed.' }
@@ -75,12 +70,12 @@ try {
     & git diff --cached --quiet
     if ($LASTEXITCODE -eq 0) { throw 'No content changes to publish.' }
     if ($LASTEXITCODE -ne 1) { throw 'Could not inspect staged differences.' }
-    & git commit -m 'chore: establish Craftageddon AI toolchain v0.1.1'
+    & git commit -m 'fix: harden Craftageddon toolkit packaging and source staging'
     if ($LASTEXITCODE -ne 0) { throw 'Commit failed. Configure Git author name and email.' }
     & git push --set-upstream origin "$Branch"
     if ($LASTEXITCODE -ne 0) { throw 'Push failed. Review credentials and repository write rights.' }
     Write-Host 'Branch pushed. Open a PR and review it before merging:'
-    Write-Host 'https://github.com/Craftageddon/Toolkit/compare/main...setup/craftageddon-ai-toolchain-v0.1.1'
+    Write-Host 'https://github.com/Craftageddon/Toolkit/compare/main...setup/toolchain-hardening-v0.1.2'
 } finally {
     Pop-Location
     Write-Host "Staging copy retained for review: $workDir"

@@ -23,4 +23,17 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Document verification limits
         run: |
-          echo 'OFFLINE CI ONLY: no Blender, AutoCAD, Windows, or AYN Thor tests were performed.'
+          echo 'OFFLINE CI ONLY: no Blender, AutoCAD, local skill installation, or AYN Thor tests were performed.'
+  windows-staging-tests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Test offline Python and PowerShell 7 staging on Windows
+        env:
+          TOOLKIT_POWERSHELL: pwsh
+        run: python -m unittest discover -s tests -v

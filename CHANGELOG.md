@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.2 (2026-10-20) - Packaging and publishing fixes
+- Rebuild archives with exactly one internal checksum manifest; enforce a present source manifest as a checksum-validated allowlist.
+- Exclude conventional generated/private paths, reject unsafe manifest paths, preserve existing outputs, and remove partial archives on failure.
+- Preflight all publication paths and stop on existing-file conflicts before copying; stage only the explicit reviewed list.
+- Include current publication documentation and manifest in the publisher source list; preserve the v0.1.1 checkpoint on its branch.
+- Add regression tests, PowerShell 7 CI on Windows, consistent source line endings, and the required V3 independence argument in the README example.
+
 ## v0.1.1 publication retry (2026-10-20)
 - Imported the checksum-verified conversation ZIP on a setup branch.
 - Preserved the existing main license and README introduction.

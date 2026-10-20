@@ -1,5 +1,16 @@
 # Publish using a write-enabled local Git client
 
+## v0.1.2 follow-up
+
+The original v0.1.1 checkpoint is preserved in PR #1. The v0.1.2 fixes use
+`setup/toolchain-hardening-v0.1.2` and a separate dependent draft PR; see
+`HARDENING_v0.1.2.md`. The publisher now refuses differing existing files before
+copying any source and stages only its explicit source list. It does not replace
+the repository LICENSE. Reconcile existing-file changes manually on a review
+branch. Its fixed initial-publication branch already exists after publication;
+do not rerun it for routine updates. The steps below describe the original setup
+workflow; local installation remains outside the current source-only work.
+
 ## Historical GitHub integration blocker
 
 The original ZIP recorded two refused writes (`create_branch`, `create_file`): **403 Resource not accessible by integration**. After the permissions update, creating the setup branch succeeded and an independent Git read confirmed it. The draft PR records the exact source commit and verification outcomes. See `PUBLICATION_RETRY_2026-10-20.md`. Do not rerun the initial-publication script against an already published branch; use a reviewed update branch based on current main.

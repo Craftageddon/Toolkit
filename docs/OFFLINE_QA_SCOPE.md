@@ -1,5 +1,9 @@
 # Offline checks versus real integrations
 
+This page describes the original v0.1.1 QA scope. For the v0.1.2 archive and actual
+PowerShell staging-helper regression checks, see `HARDENING_v0.1.2.md` and its PR.
+Those checks do not execute the network publisher or install any local skills.
+
 ## V1: requirements and content review
 The distribution package must contain the six agreed Codex skills, AGENTS.md, versioned project template, integration guide, Android reference-only protections, and three-check verification policy. This check concerns the **toolkit distribution**, not manufacturing or physical device functionality.
 

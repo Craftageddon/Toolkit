@@ -1,9 +1,9 @@
 # Toolkit
 Base Toolkit for Craftageddon.
 
-# Craftageddon AI Toolchain v0.1.1 (starter package)
+# Craftageddon AI Toolchain v0.1.2 (starter package)
 
-This is an **offline-tested, GitHub-ready toolkit**. It has not been installed on your Windows PC or connected to Blender/AutoCAD. GitHub publication is tracked on `setup/craftageddon-ai-toolchain-v0.1.1`; see the draft pull request for the exact published commit, three verification gates, and CI results. See `docs/PUBLICATION_RETRY_2026-10-20.md` for this retry scope.
+This is an **offline-tested, GitHub-ready toolkit**. It has not been installed on your Windows PC or connected to Blender/AutoCAD. The v0.1.1 source checkpoint is preserved on `setup/craftageddon-ai-toolchain-v0.1.1`. Packaging and publishing fixes are tracked on `setup/toolchain-hardening-v0.1.2`; see its draft PR for the exact commit, three verification gates, and CI results. See `docs/HARDENING_v0.1.2.md` for this follow-up scope.
 
 ## Included
 - `AGENTS.md` global project rules and **mandatory three-verification gate**
@@ -17,7 +17,7 @@ This is an **offline-tested, GitHub-ready toolkit**. It has not been installed o
 - `scripts/build_release_zip.py` deterministic release ZIP builder with SHA-256 file manifest
 
 ## Windows setup
-1. Extract the ZIP under your Desktop `Chat GPT Saved Files\Craftageddon AI Toolchain\v0.1.1` folder, or another reviewed folder. `%USERPROFILE%` means the current Windows account. Do not assume a specific username.
+1. Extract the ZIP under your Desktop `Chat GPT Saved Files\Craftageddon AI Toolchain\v0.1.2` folder, or another reviewed folder. `%USERPROFILE%` means the current Windows account. Do not assume a specific username.
 2. Open PowerShell in the extracted folder. Review `scripts/install_codex_skills.ps1` before execution.
 3. Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\install_codex_skills.ps1 -WhatIf` to preview; run without `-WhatIf` only after review.
 4. The installer **only copies six skills** into `$HOME\.codex\skills` (refuses to overwrite), and does not touch projects, AutoCAD or Blender. Restart Codex to reload skills. The PowerShell installer has not been executed on your PC.
@@ -39,7 +39,7 @@ Then create three separate, genuinely checked evidence files. Record sequentiall
 ```powershell
 python scripts/triple_verify.py record --root . --check 1 --method "requirements-matrix" --reviewer "reviewer" --evidence verification/evidence/v1.txt
 python scripts/triple_verify.py record --root . --check 2 --method "automated-tests" --reviewer "reviewer" --evidence verification/evidence/v2.txt
-python scripts/triple_verify.py record --root . --check 3 --method "independent-app-or-physical-check" --reviewer "reviewer" --evidence verification/evidence/v3.txt
+python scripts/triple_verify.py record --root . --check 3 --method "independent-app-or-physical-check" --reviewer "reviewer" --evidence verification/evidence/v3.txt --independence "Different tool or independent end-to-end check; describe the actual method here"
 python scripts/triple_verify.py status --root .
 python scripts/triple_verify.py finalize --root .  # eligible only when all 3 are valid
 ```
@@ -74,4 +74,10 @@ powershell -NoProfile -File .\scripts\publish_to_github.ps1 -WhatIf
 powershell -NoProfile -File .\scripts\publish_to_github.ps1
 ```
 
-The script checks the expected remote, clones to a new temporary working directory, creates a dedicated `setup/craftageddon-ai-toolchain-v0.1.1` branch, verifies the staged diff, and pushes only that branch. Review and merge the pull request in GitHub after CI passes. **The script has not run on your computer.** See `docs/GITHUB_DEPLOYMENT.md`.
+The script checks the expected remote, clones to a new temporary working directory, creates a dedicated `setup/toolchain-hardening-v0.1.2` branch, and stages only the reviewed source list. If any existing file differs, it stops before copying any files; reconcile changes manually on a review branch. It never replaces existing repository files. The fixed branch already exists after publication, so do not rerun this initial-publication helper for routine updates. Review the PR after CI passes. **The network publisher has not run on your computer.** Its offline staging helper is tested independently. See `docs/GITHUB_DEPLOYMENT.md`.
+
+## Build a release archive
+
+Run `python scripts/build_release_zip.py --output ../Craftageddon_AI_Toolchain_v0.1.2.zip` from the source root. The ZIP and SHA-256 sidecar must be new paths outside the source tree. An existing `SHA256SUMS.txt` is treated as a reviewed file allowlist: each listed file must match its hash, unlisted files are omitted, and exactly one fresh internal manifest is written. Update the source manifest after reviewing edits before building. `.gitattributes` keeps source line endings consistent across platforms.
+
+For a source folder without a manifest, conventional generated/private paths are excluded. That fallback does not detect credentials embedded in ordinary source files; review every release input. Partial archives are removed if a write fails, and pre-existing archives or sidecars are preserved.
