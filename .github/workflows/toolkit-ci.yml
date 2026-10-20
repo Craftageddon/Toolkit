@@ -1,0 +1,26 @@
+name: Toolkit offline tests
+on:
+  push:
+    branches: [main, 'setup/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile all Python sources
+        run: python -m compileall -q autocad scripts blender tests
+      - name: Run offline unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Document verification limits
+        run: |
+          echo 'OFFLINE CI ONLY: no Blender, AutoCAD, Windows, or AYN Thor tests were performed.'

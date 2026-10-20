@@ -1,0 +1,10 @@
+{
+  "name": "Simple leather panel test",
+  "units": "mm",
+  "entities": [
+    {"type": "polyline", "layer": "CUT", "closed": true, "points": [[0, 0], [80, 0], [80, 50], [0, 50]]},
+    {"type": "circle", "layer": "HOLES", "center": [10, 10], "radius": 2},
+    {"type": "circle", "layer": "HOLES", "center": [70, 10], "radius": 2},
+    {"type": "line", "layer": "REFERENCE", "start": [40, 0], "end": [40, 50]}
+  ]
+}
