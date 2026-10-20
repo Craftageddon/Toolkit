@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.3 (2026-10-20) - AutoCAD 2026 import fix
+- Add explicit symbol-table/layer and entity/polyline subclass markers to generated records.
+- Regenerate the reviewable example; add record-order and example-synchronization regression tests.
+- Refresh the reviewed source checksums without weakening the archive integrity gate.
+- Document bounded native AutoCAD import, dimensions, DWG/DXF reopen, independent parser evidence and unchanged-file hashes.
+- Preserve prior release checkpoints; no installer, Android, production-drawing or global application-setting changes.
+
 ## v0.1.2 (2026-10-20) - Packaging and publishing fixes
 - Rebuild archives with exactly one internal checksum manifest; enforce a present source manifest as a checksum-validated allowlist.
 - Exclude conventional generated/private paths, reject unsafe manifest paths, preserve existing outputs, and remove partial archives on failure.

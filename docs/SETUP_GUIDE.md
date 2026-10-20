@@ -20,7 +20,7 @@
 - For small deterministic 2D patterns, start with restricted offline JSON -> AutoLISP generator in this package.
 - Generate `*.lsp` locally; review source; create an **empty disposable test drawing in mm**; use AutoCAD APPLOAD and command `CFIMPORT`.
 - Compare entity count, red and cyan layers, geometry bounds, hole radii, and exported DXF. Do not load into original work until all checks pass.
-- This is NOT a full native DWG automation bridge, and has not been tested inside AutoCAD. Later bridge can use .NET API with signing, allowlisted commands and explicit approvals.
+- The corrected v0.1.3 sample has bounded native AutoCAD 2026 import, DWG/DXF save/reopen and independent DXF checks. See `AUTOCAD_IMPORT_FIX_v0.1.3.md`. This does not provide a general automation bridge or certify other drawings. Run CFIMPORT once in an empty test drawing; it appends geometry.
 
 ## SharePoint / OneDrive (phase 5)
 - SharePoint plugin installation was suggested but needs user approval and corporate tenant authorization. Network locations are not automatically accessible just because SharePoint is connected.

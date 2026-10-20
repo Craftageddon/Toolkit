@@ -117,6 +117,31 @@ class AutoCADGeneratorTests(unittest.TestCase):
         self.assertIn('oldunits 4', value)
         self.assertIn('(defun c:CFIMPORT', value)
 
+    def test_layer_records_include_subclass_markers_in_order(self):
+        sample = json.loads((ROOT / 'autocad' / 'examples' / 'simple_pattern.json').read_text())
+        generated = cad.generate(sample)
+        layer_records = [line for line in generated.splitlines() if '(cons 0 "LAYER")' in line]
+        self.assertEqual(len(layer_records), 3)
+        for record in layer_records:
+            markers = ['(cons 0 "LAYER")', '(cons 100 "AcDbSymbolTableRecord")',
+                       '(cons 100 "AcDbLayerTableRecord")', '(cons 2 ']
+            positions = [record.index(marker) for marker in markers]
+            self.assertEqual(positions, sorted(positions))
+
+    def test_polyline_records_include_subclass_markers_in_order(self):
+        entity = {'type': 'polyline', 'layer': 'CUT', 'closed': True,
+                  'points': [[0, 0], [80, 0], [80, 50], [0, 50]]}
+        record = cad.add_entity(entity)
+        markers = ['(cons 0 "LWPOLYLINE")', '(cons 100 "AcDbEntity")',
+                   '(cons 8 "CG_CUT")', '(cons 100 "AcDbPolyline")', '(cons 90 4)']
+        positions = [record.index(marker) for marker in markers]
+        self.assertEqual(positions, sorted(positions))
+
+    def test_checked_in_example_matches_generator(self):
+        sample = json.loads((ROOT / 'autocad' / 'examples' / 'simple_pattern.json').read_text())
+        expected = cad.generate(sample).encode('utf-8')
+        self.assertEqual((ROOT / 'autocad' / 'examples' / 'simple_pattern_preview.lsp').read_bytes(), expected)
+
     def test_lisp_parentheses_are_balanced(self):
         sample = json.loads((ROOT / 'autocad' / 'examples' / 'simple_pattern.json').read_text())
         data = cad.generate(sample)
