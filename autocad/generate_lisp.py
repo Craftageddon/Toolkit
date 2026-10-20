@@ -82,7 +82,7 @@ def add_entity(ent):
         if closed and abs(sum(xy[i][0]*xy[(i+1)%len(xy)][1] - xy[(i+1)%len(xy)][0]*xy[i][1] for i in range(len(xy)))) < 1e-9:
             raise PatternError('Closed polyline has zero area')
         coords = '\n'.join(f'    {lwpoint_expr(p)}' for p in points)
-        return f'''  (if (not (entmake (list (cons 0 "LWPOLYLINE") (cons 8 "{layer_name}") (cons 90 {len(points)}) (cons 70 {1 if closed else 0})\n{coords}))) (setq errors (+ errors 1)))'''
+        return f'''  (if (not (entmake (list (cons 0 "LWPOLYLINE") (cons 100 "AcDbEntity") (cons 8 "{layer_name}") (cons 100 "AcDbPolyline") (cons 90 {len(points)}) (cons 70 {1 if closed else 0})\n{coords}))) (setq errors (+ errors 1)))'''
     raise PatternError('Allowed types: circle, line, polyline')
 
 
@@ -96,7 +96,7 @@ def generate(data):
         raise PatternError('Provide 1..20000 entities')
     entity_lines = '\n'.join(add_entity(ent) for ent in ents)
     layers = '\n'.join(f'''      (if (not (tblsearch "LAYER" "{name}"))
-        (if (not (entmake (list (cons 0 "LAYER") (cons 2 "{name}") (cons 70 0) (cons 62 {color}) (cons 6 "Continuous")))) (setq errors (+ errors 1)))
+        (if (not (entmake (list (cons 0 "LAYER") (cons 100 "AcDbSymbolTableRecord") (cons 100 "AcDbLayerTableRecord") (cons 2 "{name}") (cons 70 0) (cons 62 {color}) (cons 6 "Continuous")))) (setq errors (+ errors 1)))
         (if (or (/= (abs (cdr (assoc 62 (tblsearch "LAYER" "{name}")))) {color})
                 (assoc 420 (tblsearch "LAYER" "{name}")))
           (setq errors (+ errors 1))))'''
