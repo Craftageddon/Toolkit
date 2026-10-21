@@ -18,12 +18,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Compile all Python sources
-        run: python -m compileall -q autocad scripts blender tests
+        run: python -m compileall -q autocad scripts blender skills tests
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
       - name: Document verification limits
         run: |
-          echo 'OFFLINE CI ONLY: no Blender, AutoCAD, local skill installation, or AYN Thor tests were performed.'
+          echo 'OFFLINE CI ONLY: installer tests use disposable directories; no real user profile, Blender, AutoCAD or AYN Thor tests.'
   windows-staging-tests:
     runs-on: windows-latest
     steps:

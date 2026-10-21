@@ -20,7 +20,7 @@ $allowedFiles = @(
     'docs/AUTOCAD_IMPORT_FIX_v0.1.3.md',
     'scripts/build_release_zip.py', 'scripts/install_codex_skills.ps1',
     'scripts/publish_to_github.ps1', 'scripts/triple_verify.py', 'scripts/stage_toolkit_source.ps1',
-    'tests/test_toolchain.py', 'tests/test_hardening.py',
+    'tests/test_toolchain.py', 'tests/test_hardening.py', 'tests/test_skill_packaging.py',
     'templates/Project_Template/README.md', 'templates/Project_Template/REQUIREMENTS.md',
     'templates/Project_Template/CHANGELOG.md',
     'skills/craftageddon-cad-forge/SKILL.md',
@@ -28,7 +28,8 @@ $allowedFiles = @(
     'skills/craftageddon-leather-pattern-engineer/SKILL.md',
     'skills/craftageddon-ember-steel-ui/SKILL.md',
     'skills/craftageddon-android-lineageos-engineer/SKILL.md',
-    'skills/craftageddon-release-qa/SKILL.md'
+    'skills/craftageddon-release-qa/SKILL.md',
+    'skills/craftageddon-release-qa/scripts/triple_verify.py'
 )
 if ($Remote -ne 'https://github.com/Craftageddon/Toolkit.git') {
     throw 'Remote must be the approved Craftageddon/Toolkit HTTPS URL.'

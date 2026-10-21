@@ -20,14 +20,34 @@ This update fixes AutoCAD 2026 layer/polyline record creation and keeps the chec
 1. Extract the ZIP under your Desktop `Chat GPT Saved Files\Craftageddon AI Toolchain\v0.1.3` folder, or another reviewed folder. `%USERPROFILE%` means the current Windows account. Do not assume a specific username.
 2. Open PowerShell in the extracted folder. Review `scripts/install_codex_skills.ps1` before execution.
 3. Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\install_codex_skills.ps1 -WhatIf` to preview; run without `-WhatIf` only after review.
-4. The installer **only copies six skills** into `$HOME\.codex\skills` (refuses to overwrite), and does not touch projects, AutoCAD or Blender. Restart Codex to reload skills. The PowerShell installer has not been executed on your PC.
+4. The installer **only copies six skill directories and their bundled helpers** into `$HOME\.codex\skills` (refuses to overwrite), and does not touch projects, AutoCAD or Blender. Restart Codex to reload skills. Installer integration tests use disposable directories; they do not install into your real user profile.
 5. Copy this `AGENTS.md` to the root of each project after reviewing it.
 6. Test in a Python 3.10+ environment: `python -m unittest discover -s tests -v`. Offline tests do not replace target-application tests.
 7. Generate your own AutoLISP from `autocad/examples/simple_pattern.json` with `python autocad/generate_lisp.py autocad/examples/simple_pattern.json autocad/examples/pattern_review.lsp` (pick an unused output file), review it, and load only into a disposable millimeter drawing. The corrected sample has recorded AutoCAD 2026 import/export verification; every new pattern still needs its own checks. Run CFIMPORT only once per empty test drawing because it appends geometry.
 8. See `docs/SETUP_GUIDE.md`, `docs/PHASE_STATUS.md`, and `docs/VERIFICATION_POLICY.md` before any plugin connection or hardware task.
 
 ## Verification usage
-From any project directory (example using Python from toolkit path):
+The installed `craftageddon-release-qa` skill is self-contained. Its helper lives
+at `scripts/triple_verify.py` **inside that skill's folder**. Resolve the helper
+relative to the loaded `SKILL.md`, invoke it by absolute path, and pass the real
+project directory with `--root`. You can run it from an unrelated working
+directory without a Toolkit checkout or third-party Python packages.
+
+For example (replace both absolute paths with your actual locations):
+
+```text
+python "<installed-skill-directory>/scripts/triple_verify.py" init --root "<project-directory>" --project "Demo" --artifact README.md
+python "<installed-skill-directory>/scripts/triple_verify.py" status --root "<project-directory>"
+```
+
+The installer still skips existing skill directories without overwriting them.
+Existing installations do not acquire this helper automatically: back up and
+review an explicit skill replacement separately. A checklist-only request does
+not need tracker initialization; leave unperformed gates NOT RUN.
+
+The repository's top-level CLI remains available for Toolkit users:
+
+From the Toolkit source directory:
 
 ```powershell
 python scripts/triple_verify.py init --root . --project "Demo" --artifact README.md
