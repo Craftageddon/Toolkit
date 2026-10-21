@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased - standalone release-QA skill packaging
+- Include a byte-identical copy of the canonical verification helper inside the release-QA skill so fresh installations work outside the Toolkit checkout.
+- Explain skill-relative helper resolution and explicit project roots; leave checklist-only gates unrun.
+- Add isolated helper lifecycle and PowerShell installer tests, including preview and preservation of existing skills.
+- Extend the reviewed source manifest and publisher allowlist; retain the published v0.1.3 release and installer no-overwrite behavior.
+
 ## v0.1.3 (2026-10-20) - AutoCAD 2026 import fix
 - Add explicit symbol-table/layer and entity/polyline subclass markers to generated records.
 - Regenerate the reviewable example; add record-order and example-synchronization regression tests.

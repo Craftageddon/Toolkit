@@ -1,4 +1,4 @@
-# Installs only the six reviewed SKILL.md directories. No overwrite, no network, no app configuration.
+# Installs the six reviewed skill directories, including bundled helpers. No overwrite, network, or app configuration.
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param([string]$Destination = (Join-Path $HOME '.codex\skills'))
 $ErrorActionPreference = 'Stop'
