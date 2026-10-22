@@ -1,9 +1,11 @@
 # Toolkit
 Base Toolkit for Craftageddon.
 
-# Craftageddon AI Toolchain v0.1.3 (starter package)
+# Craftageddon AI Toolchain v0.1.4 (starter package)
 
-This update fixes AutoCAD 2026 layer/polyline record creation and keeps the checked-in example synchronized with the generator. The corrected source and example are byte-identical to those used in the recorded native AutoCAD test: an 80 x 50 mm panel, two diameter-4 mm holes, red cut/hole layers, and a cyan reference line. DWG/DXF save/reopen and a separate DXF parser passed for that sample. This is bounded integration evidence, not general production or fabrication certification. See `docs/AUTOCAD_IMPORT_FIX_v0.1.3.md` for exact scope and known limitations. Earlier publication checkpoints remain preserved in Git history.
+This release makes the installed release-QA skill self-contained by bundling its verification helper. It can track a separate project from an unrelated working directory using an explicit project root. The helper remains byte-identical to the supported top-level CLI. Disposable installer and helper lifecycle tests cover fresh copies, preview/no-overwrite behavior and artifact-change detection.
+
+The AutoCAD 2026 fix from v0.1.3 is retained unchanged. Its recorded native test covers an 80 x 50 mm panel, two diameter-4 mm holes, red cut/hole layers, a cyan reference line, DWG/DXF save/reopen and an independent DXF parser. This is bounded sample evidence, not general production or fabrication certification. See `docs/AUTOCAD_IMPORT_FIX_v0.1.3.md` for exact scope and limitations. Keep v0.1.3 as the previous release checkpoint.
 
 ## Included
 - `AGENTS.md` global project rules and **mandatory three-verification gate**
@@ -17,7 +19,7 @@ This update fixes AutoCAD 2026 layer/polyline record creation and keeps the chec
 - `scripts/build_release_zip.py` deterministic release ZIP builder with SHA-256 file manifest
 
 ## Windows setup
-1. Extract the ZIP under your Desktop `Chat GPT Saved Files\Craftageddon AI Toolchain\v0.1.3` folder, or another reviewed folder. `%USERPROFILE%` means the current Windows account. Do not assume a specific username.
+1. Extract the ZIP under your Desktop `Chat GPT Saved Files\Craftageddon AI Toolchain\v0.1.4` folder, or another reviewed folder. `%USERPROFILE%` means the current Windows account. Do not assume a specific username.
 2. Open PowerShell in the extracted folder. Review `scripts/install_codex_skills.ps1` before execution.
 3. Run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\install_codex_skills.ps1 -WhatIf` to preview; run without `-WhatIf` only after review.
 4. The installer **only copies six skill directories and their bundled helpers** into `$HOME\.codex\skills` (refuses to overwrite), and does not touch projects, AutoCAD or Blender. Restart Codex to reload skills. Installer integration tests use disposable directories; they do not install into your real user profile.
@@ -98,6 +100,6 @@ The script checks the expected remote, clones to a new temporary working directo
 
 ## Build a release archive
 
-Run `python scripts/build_release_zip.py --output ../Craftageddon_AI_Toolchain_v0.1.3.zip` from the source root. The ZIP and SHA-256 sidecar must be new paths outside the source tree. An existing `SHA256SUMS.txt` is treated as a reviewed file allowlist: each listed file must match its hash, unlisted files are omitted, and exactly one fresh internal manifest is written. Update the source manifest after reviewing edits before building. `.gitattributes` keeps source line endings consistent across platforms.
+Run `python scripts/build_release_zip.py --output ../Craftageddon_AI_Toolchain_v0.1.4.zip` from the source root. The ZIP and SHA-256 sidecar must be new paths outside the source tree. An existing `SHA256SUMS.txt` is treated as a reviewed file allowlist: each listed file must match its hash, unlisted files are omitted, and exactly one fresh internal manifest is written. Update the source manifest after reviewing edits before building. `.gitattributes` keeps source line endings consistent across platforms.
 
 For a source folder without a manifest, conventional generated/private paths are excluded. That fallback does not detect credentials embedded in ordinary source files; review every release input. Partial archives are removed if a write fails, and pre-existing archives or sidecars are preserved.

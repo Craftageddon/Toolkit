@@ -1,4 +1,4 @@
-# Craftageddon AI Development Rules (toolchain v0.1.2)
+# Craftageddon AI Development Rules (toolchain v0.1.4)
 
 Applies to this repository and is intended to be copied into each Craftageddon project.
 
