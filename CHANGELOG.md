@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased - standalone release-QA skill packaging
+## v0.1.4 (2026-10-22) - Standalone release-QA skill packaging
 - Include a byte-identical copy of the canonical verification helper inside the release-QA skill so fresh installations work outside the Toolkit checkout.
 - Explain skill-relative helper resolution and explicit project roots; leave checklist-only gates unrun.
 - Add isolated helper lifecycle and PowerShell installer tests, including preview and preservation of existing skills.
